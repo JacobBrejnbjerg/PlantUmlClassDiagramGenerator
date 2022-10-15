@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -19,8 +20,21 @@ namespace PlantUmlClassDiagramGenerator.Library
             {
                 if (!(typeStntax.Type is SimpleNameSyntax typeNameSyntax)) continue;
                 var baseTypeName = TypeNameText.From(typeNameSyntax);
-                items.Add(new Relationship(baseTypeName, subTypeName, "<|--", baseTypeName.TypeArguments));             
+                string nameOnly = GetNameOnly(baseTypeName.Identifier);
+                bool isInterface = nameOnly?[0] == 'I';
+                string symbol = isInterface ? "<|.." : "<|--";
+                items.Add(new Relationship(baseTypeName, subTypeName, symbol, baseTypeName.TypeArguments));             
             }
+        }
+
+        private string GetNameOnly(string name)
+        {
+            name = name.Replace("\"", "");
+
+            if (name.Contains('`'))
+                name = name.Substring(0, name.IndexOf("`"));
+
+            return name;
         }
 
         public void AddInnerclassRelationFrom(SyntaxNode node)
