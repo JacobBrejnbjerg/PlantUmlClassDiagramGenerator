@@ -85,7 +85,7 @@ namespace PlantUmlClassDiagramGenerator
 
                 using var filestream = new FileStream(outputFileName, FileMode.Create, FileAccess.Write);
                 using var writer = new StreamWriter(filestream);
-                var gen = new ClassDiagramGenerator(writer, "    ", ignoreAcc, parameters.ContainsKey("-createAssociation"));
+                var gen = new ClassDiagramGenerator(writer, "    ", ignoreAcc, parameters.ContainsKey("-createAssociation"), Path.GetFileNameWithoutExtension(inputFileName));
                 gen.Generate(root);
             }
             catch (Exception e)
@@ -168,7 +168,7 @@ namespace PlantUmlClassDiagramGenerator
 
                         using var filestream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
                         using var writer = new StreamWriter(filestream);
-                        var gen = new ClassDiagramGenerator(writer, "    ", ignoreAcc, parameters.ContainsKey("-createAssociation"));
+                        var gen = new ClassDiagramGenerator(writer, "    ", ignoreAcc, parameters.ContainsKey("-createAssociation"), Path.GetFileNameWithoutExtension(inputFile));
                         gen.Generate(root);
                     }
 

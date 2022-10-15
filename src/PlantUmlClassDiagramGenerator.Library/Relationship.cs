@@ -19,6 +19,12 @@
 
         public override string ToString()
         {
+            if (symbol == "<|..")
+            {
+                return $"interface {baseTypeName.Identifier} \n" +
+                    $"{baseTypeName.Identifier}{baseLabel} {symbol}{subLabel} {subTypeName.Identifier}";
+            }
+
             return $"{baseTypeName.Identifier}{baseLabel} {symbol}{subLabel} {subTypeName.Identifier}";
         }
     }

@@ -19,6 +19,7 @@ namespace PlantUmlClassDiagramGenerator.Library
         private readonly string indent;
         private int nestingDepth = 0;
         private readonly bool createAssociation;
+        private readonly string mainframeName;
 
         private readonly Dictionary<string, string> escapeDictionary = new Dictionary<string, string>
         {
@@ -26,18 +27,22 @@ namespace PlantUmlClassDiagramGenerator.Library
             {@"(?<before>[^}])}(?<after>[^}])", "${before}&#125;${after}"},
         };
 
-        public ClassDiagramGenerator(TextWriter writer, string indent, Accessibilities ignoreMemberAccessibilities = Accessibilities.None, bool createAssociation = true)
+        public ClassDiagramGenerator(TextWriter writer, string indent,
+                                     Accessibilities ignoreMemberAccessibilities = Accessibilities.None, bool createAssociation = true, string mainframeName = "")
         {
             this.writer = writer;
             this.indent = indent;
             additionalTypeDeclarationNodes = new List<SyntaxNode>();
             this.ignoreMemberAccessibilities = ignoreMemberAccessibilities;
             this.createAssociation = createAssociation;
+            this.mainframeName = mainframeName;
         }
 
         public void Generate(SyntaxNode root)
         {
             WriteLine("@startuml");
+            if (!string.IsNullOrWhiteSpace(mainframeName))
+                WriteLine("mainframe **CD** " + mainframeName);
             GenerateInternal(root);
             WriteLine("@enduml");
         }
